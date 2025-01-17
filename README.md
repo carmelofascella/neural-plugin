@@ -16,7 +16,7 @@ cmake -S . -B build
 cmake --build build --config Debug
 ```
 
-Then you will find the plugin in format AU, VST3 and Standalone in `build/neural-plugin_artefacts/Debug/`
+Then you will find the plugin in format AU, VST3 and Standalone in `build/src/plugin/neural-plugin_artefacts/Debug/`
 
 ### Load neural network weights
 
