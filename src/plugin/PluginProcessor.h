@@ -3,7 +3,13 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <RTNeural/RTNeural.h>
 
-using RTLSTMModel32 = RTNeural::ModelT<float, 1, 1, RTNeural::LSTMLayerT<float, 1, 32>, RTNeural::DenseT<float, 32, 1>>;
+// the loaded model process floats, has 1 input and 1 output. 
+// The network has one LSTM layer with 1 input and 32 lstm internal units and 1 dense layer.
+using RTLSTMModel32 = RTNeural::ModelT<float, 
+                                       1, 
+                                       1, 
+                                       RTNeural::LSTMLayerT<float, 1, 32>, 
+                                       RTNeural::DenseT<float, 32, 1>>;
 
 
 //==============================================================================
