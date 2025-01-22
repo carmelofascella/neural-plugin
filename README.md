@@ -25,6 +25,10 @@ The absolute path of the file is saved into `jsonPath` in the file `PluginProces
 
 The network architecture in this project has 1 input, one LSTM layer with 1 input and 32 internal units, one dense later and 1 output.
 
+### Training neural network
+
+The repo https://github.com/carmelofascella/lstm-audio contains the code used to train the LSTM loaded by this plugin.
+
 ### References
 
 The main reference for this project is the book "Build AI-Enhanced Audio Plugins with C++" by Matthew John Yee-King.
