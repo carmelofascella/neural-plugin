@@ -13,7 +13,8 @@ using RTLSTMModel32 = RTNeural::ModelT<float,
 
 
 //==============================================================================
-class AudioPluginAudioProcessor  : public juce::AudioProcessor
+class AudioPluginAudioProcessor  : public juce::AudioProcessor,
+                                   public juce::ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -52,11 +53,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState apvts {*this, nullptr, "Parameters", createParameterLayout()};
+
 private:
     RTLSTMModel32 lstmModel; 
     void setupModel(RTLSTMModel32& model, std::string jsonFile);
 
-    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };

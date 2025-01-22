@@ -15,6 +15,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 {
     std::string jsonPath = "/Users/carmelofascella/Development/scripts/neural-plugin/resources/models/rtneural_model_lstm_32.json";
     setupModel(lstmModel, jsonPath);
+    apvts.state.addListener(this);
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -130,6 +131,9 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    auto isOn = apvts.getRawParameterValue("isON")->load();
+    
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -149,9 +153,12 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         auto* outData = buffer.getWritePointer (channel);
         auto* inData = buffer.getReadPointer (channel);
-
+        
         for(auto i=0; i<buffer.getNumSamples(); ++i){
-            outData[i] = lstmModel.forward(&inData[i]);
+            if(isOn)
+                outData[i] = lstmModel.forward(&inData[i]);
+            else
+                outData[i] = inData[i];
         }
     }
 }
@@ -209,4 +216,17 @@ void AudioPluginAudioProcessor::setupModel(RTLSTMModel32& model, std::string jso
 
     auto& dense = model.get<1>();
     RTNeural::torch_helpers::loadDense<float> (modelJson, "dense.", dense);
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    layout.add(std::make_unique<juce::AudioParameterChoice> (
+        "isON",
+        "isON",
+        juce::StringArray {"OFF", "ON"},
+        0));
+
+    return layout;
 }

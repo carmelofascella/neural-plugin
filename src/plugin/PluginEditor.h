@@ -19,5 +19,10 @@ private:
     // access the processor object that created it.
     AudioPluginAudioProcessor& processorRef;
     std::string titleString{"Neural Plugin"};
+    juce::TextButton isOnButton;
+
+    using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+    std::unique_ptr<ButtonAttachment> isOnButtonAttachment;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

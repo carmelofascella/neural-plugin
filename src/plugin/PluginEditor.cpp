@@ -5,11 +5,16 @@
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
 {
-    juce::ignoreUnused (processorRef);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    isOnButtonAttachment = std::make_unique<ButtonAttachment>(p.apvts, "isON", isOnButton);
+    
+    isOnButton.setButtonText("ON");
+    isOnButton.setClickingTogglesState(true);
+    
+    isOnButton.setColour(juce::TextButton::buttonColourId, juce::Colour(15, 30, 45));
+    isOnButton.setColour(juce::TextButton::buttonOnColourId, juce::Colours::green);
 
+    addAndMakeVisible(isOnButton);
+    setSize (400, 300);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -30,6 +35,8 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    juce::Rectangle r(getWidth(), getHeight());
+    
+    isOnButton.setSize(100, 100);
+    isOnButton.setCentrePosition(r.getCentre());
 }
